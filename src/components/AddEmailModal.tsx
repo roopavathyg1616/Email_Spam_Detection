@@ -60,27 +60,22 @@ export default function AddEmailModal({ userId, onClose, onEmailAdded }: AddEmai
   setLoading(true);
 
   try {
-    const response = await fetch('http://localhost:5000/predict', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    senderEmail: formData.senderEmail,
-    senderName: formData.senderName,
-    subject: formData.subject,
-    body: formData.body,
-  }),
-});
+    const spamKeywords = [
+      'free', 'win', 'winner', 'cash', 'offer',
+      'urgent', 'click', 'prize', 'money', 'act now'
+    ];
 
-const result = await response.json();
+    const emailText = (formData.subject + ' ' + formData.body).toLowerCase();
 
-if (result.isSpam) {
-  alert('🚨 This email is detected as SPAM!');
-} else {
-  alert('✅ This email looks SAFE.');
-}
- }
+    const isSpam = spamKeywords.some(word =>
+      emailText.includes(word)
+    );
+
+    if (isSpam) {
+      alert('🚨 This email is detected as SPAM!');
+    } else {
+      alert('✅ This email looks SAFE.');
+    }
 
     onEmailAdded(); // refresh list
     onClose();      // close modal

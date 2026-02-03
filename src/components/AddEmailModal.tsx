@@ -80,8 +80,7 @@ if (result.isSpam) {
 } else {
   alert('✅ This email looks SAFE.');
 }
-
-    }
+ }
 
     onEmailAdded(); // refresh list
     onClose();      // close modal
